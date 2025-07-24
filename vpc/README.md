@@ -155,7 +155,83 @@
 
 ![img_5.png](img_5.png)
 
-![img_6.png](img_6.png)
+![img_7.png](img_7.png)
+
+- Accepter vpc CIDR will be shown after the peering connection is established.
+- You can enable a VPC to resolve public IPV4 DNS hostnames to private IPv4 addresses when queried from instances in the peer VPC
+  - To accomplish this, both VPCs must have DNS hostnames and DNS resolution enabled
+
+- VPC Peering must knows
+  - Peered VPCs cannot have any overlapping CIDR blocks.
+  - Peering does NOT allow for transitive routing
+  - Route tables must be updated to correctly route the traffic destined for a peered VPC.
+
+- Below image represents NOT transitive routing
+![img_8.png](img_8.png)
+
+- When VPCs are peered in the same region, you can reference peered VPC security group IDs as needed (e.g. security group rules).
+
+- Use Cases
+  - Centralized Shared Services VPC
+  - Multi-Region Internal Applicaiton Deployment
+  - Cross-Account VPC integration for collaboration or merger/acquisition scenarios.
+
+
+## NAT Gateways
+- NAT: Network Address Translation
+- A service that operates on a router or edge platform to connect private networks to public networks like the internet.
+- With NAT, an organization needs one IP address or one limited public IP address to represent and entire group of devices as they connect outside their network
+- AWS NAT gateway is a Network Address Translation (NAT) service in AWS.
+- You can use a NAT gateway so that instances in a private subnet can connect to services outside your VPC but external services cannot initiate a connection with those instances.
+- Why NAT
+  - Allows resoruces in private subnets to connect to the internet, peered VPCs an on-prem networks
+  - Private resources cannot receive unsolicited connection requests from outside the network.
+- NAT Gateway vs NAT Instance
+  - NAT Gateway is a managed service that automatically scales and provides high availability.
+  - NAT Instance is an EC2 instance that you must manage, scale, and maintain.
+  - NAT Gateway supports both IPv4 and IPv6 traffic, while NAT Instance only supports IPv4 traffic.
+  - NAT Gateway is more cost-effective for high traffic volumes, while NAT Instance is more cost-effective for low traffic volumes.
+  - NAT Instance: outdated, should avoid. Provides network address translation via an EC2 instance that you own and manage! Lots of overhead.
+  - NAT Instance: requires that you diable source/destination check
+  - NAT Gateways: Automatically scale as needed (5 Gbps to 100 Gbps). Deployed to a single AZ. Leverage an Elastic IP address.
+  - You will likely choose NAT Gateways over NAT Instances whenever you can.
+  - For true resiliency, you must deploy a NAT Gateway in multiple AZs. In this scenario you need to keep an eye on the costs !
+- You must deploy NAT devices within a public subnet to allow internet access !
+- You do not assign security groups to NAT gateways, but you can assign network ACLs to control traffic.
+
+
+## Elastic IP Address
+  - A static IPv4 address designed for dynamic cloud computing. 
+  - An elastic IP address is allocated to your AWS account, and is yours untill you realise it.
+  - These are regional resources that do not change over time.
+
+
+## Transit VPCs
+- Peering VPCs are not transitive by default
+- You can achieve a Transit VPC by using a VPN solution
+
+![img_9.png](img_9.png)
+
+- Virtual Private Gateway (VGW)
+  - It is a simply the VPN concentrator on the AWS side of a sit-to-site VPN connection.
+  - You attach a VGW to your VPC, and then create a VPN connection between the VGW and your on-premises network.
+  - VGW is a managed service that provides high availability and scalability.
+
+## VPC Endpoints & AWS Private Link
+- AWS Private Link is a highly available, scalable technology that enables private connectivity between VPCs and AWS services as if they were in the same VPC.
+- Aws service is going to leverage the public endpoint by default.
+- Private Link allows your private resources to communicate with services entirely within the AWS private network.
+- Allows you to remove need of IGWs, NAT Gateways, VPNs, Direct Connects
+- Create endpoints within your VPC to control and secure the traffic
+- Capable of hosting your own private services as well by setting up a service provider and a service consumer.
+
+![img_10.png](img_10.png)
+
+- AWS Private Link is what powers VPC Interface Endpoints, which will be discussed soon !
+
+
+
+
 
 
 
