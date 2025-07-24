@@ -1,0 +1,100 @@
+# AWS VPC Networking
+- A logically isolated section of the AWS Cloud where you can launch AWS resources in a virtual network that you define.
+- You have complete control over your virtual networking environment, including selection of your own IP address range, creation of subnets, and configuration of route tables and network gateways.
+- VPC is the virtual version of a traditional network datacenter, with the benefits of using the scalable infrastructure of AWS.
+- Two types of VPCs:
+  - Default VPC: Automatically created in each region, with a default subnet in each availability zone.
+  - Custom VPC: Created by the user, allowing for more control over the network configuration.
+
+
+## VPC Components
+- CIDR Block: A range of IP addresses in CIDR notation.
+- Subnets: You can assign IP addresses, both IPv4 and IPv6, to your VPCs and subnets. You can also bring your public IPv4 addresses and IPv6 GUA addresses to AWS and allocate them to resources in your VPC, such as EC2 instances, NAT gateways, and Network Load Balancers.
+- Routing: Use route tables to determine where network traffic from your subnet or gateway is directed.
+- Gateways and endpoints: A gateway connects your VPC to another network. For example, use an internet gateway to connect your VPC to the internet. Use a VPC endpoint to connect to AWS services privately, without the use of an internet gateway or NAT device.
+- Peering connections: Use a VPC peering connection to route traffic between the resources in two VPCs.
+- Traffic Mirroring: Copy network traffic from network interfaces and send it to security and monitoring appliances for deep packet inspection.
+- Transit gateways: Use a transit gateway, which acts as a central hub, to route traffic between your VPCs, VPN connections, and AWS Direct Connect connections.
+- VPC Flow Logs: A flow log captures information about the IP traffic going to and from network interfaces in your VPC.
+- VPN connections: Connect your VPCs to your on-premises networks using AWS Virtual Private Network (AWS VPN).
+- NACLS: Network ACLs (NACLs) are stateless firewalls that control inbound and outbound traffic at the subnet level.
+- Security Groups: Security groups are stateful firewalls that control inbound and outbound traffic at the instance level.
+
+## VPC CIDR
+- you can select an IP CIDR block for your VPC, which defines the range of IP addresses that can be used within the VPC.
+- Private IPV4 blocks are required and range from /16 to /28.
+- IPV6 CIDR blocks are optional and range from /44 to /60
+- CIDR must be from the RFC 1918 range (Private IP Space): 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16
+  - These IPs are private and not publicly resolvable on the internet.
+  - Carefully plan your CIDR block to avoid conflicts with other networks, especially if you plan to connect your VPC to on-premises networks or other VPCs.
+  - Plan CIDR to be large enough to accommodate future growth, as CIDR blocks cannot be resized after creation.
+- AWS VPCs are regional resources, meaning they are created within a specific AWS region and can span multiple availability zones within that region.
+- Limits
+  - 5 VPCs per region by default, which can be increased by requesting a limit increase.
+  - 200 subnets per VPC by default, which can also be increased by requesting a limit increase.
+  - 50 route tables per VPC by default, which can be increased by requesting a limit increase.
+  - 5 internet gateways per region by default, which can be increased by requesting a limit increase.
+  - 50 NAT gateways per region by default, which can be increased by requesting a limit increase.
+  - 50 VPC endpoints per region by default, which can be increased by requesting a limit increase.
+  - 50 VPC peering connections per VPC by default, which can be increased by requesting a limit increase.
+  - 50 transit gateways per region by default, which can be increased by requesting a limit increase.
+
+## Internet Gateway
+- Supports IPv4 and IPv6 traffic.
+- Automatically scales for traffic and offers high availability.
+- Enables public subnet resources to connect to the internet.
+- Give you a target in your VPC for internet-routable traffic to flow through.
+- Created separately from the VPC and can be attached to only one VPC at a time.
+
+![img.png](img.png)
+
+## VPC Subnets
+- A subnet is a range of IP addresses in your VPC for hosting resources.
+- Subnets are bound to a single availability zone, which provides high availability and fault tolerance.
+- Subnets support IPV4 Only, IPV6 Only, or Dual Stack (IPV4 and IPV6).
+- Four Types of Subnets:
+  - Public Subnet: Has a route to the internet through an internet gateway, allowing resources to communicate with the internet.
+  - Private Subnet: Does not have a route to the internet, used for resources that do not require direct internet access.
+  - Isolated Subnet: Similar to a private subnet but does not allow any inbound or outbound traffic from the internet.
+  - VPN Only Subnet: Used for resources that need to connect to on-premises networks via a VPN connection.
+- AWS reserves 5 IP addresses in each subnet CIDR block for internal use, so the first four IP addresses and the last IP address in the CIDR block are reserved.
+  - Example: In a /28 subnet, you only have 11 usable IP addresses.
+    - 16-5 = 11 usable IP addresses
+    - The first IP address is reserved for network address
+    - The second IP address is reserved for the VPC router
+    - The third IP address is reserved for DNS
+    - The fourth IP address is reserved for future use
+    - The last IP address is reserved for broadcast
+  - Example VPC CIDR Block: 10.0.0.0/16, Subnet CIDR Block: 10.0.0.0/24
+    - 10.0.0.0 - Network address
+    - 10.0.0.1 - VPC router
+    - 10.0.0.2 - DNS
+    - 10.0.0.3 - Future use
+    - 10.0.0.255 - Broadcast address
+
+## VPC Route Tables
+- A route table contains a set of rules, called routes, that are used to determine where network traffic is directed.
+- Each subnet in your VPC must be associated with a route table.
+- If a subnet is not explicitly associated with a route table, it uses the main route table for the VPC.
+- The main route table is created automatically when you create a VPC.
+- You can create additional route tables to control traffic flow within your VPC.
+- Route tables can have multiple routes, each with a destination CIDR block and a target (such as an internet gateway, NAT gateway, or VPC peering connection).
+- Routes are evaluated in order, and the first matching route is used to direct traffic.
+- Custom route table concepts
+  - Destination: The destination CIDR block for the route.
+  - Target: The target for the route, such as an internet gateway, NAT gateway, or VPC peering connection, etc. where destination traffic should go.
+  - Local: A special route that allows communication between instances in the same VPC.
+  - Association: The association between a subnet and a route table, which determines which route table is used for traffic from that subnet.
+- Generally, it is the best practice to have 1:1 relationship between a subnet and a route table, meaning each subnet should be associated with only one route table.
+- However, you can associate multiple subnets with the same route table if they share the same routing requirements.
+
+## NACLs
+
+## Security Groups
+
+## DHCP Option Sets
+
+## VPC Peerings
+
+
+
