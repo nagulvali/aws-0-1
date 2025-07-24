@@ -89,12 +89,65 @@
 - However, you can associate multiple subnets with the same route table if they share the same routing requirements.
 
 ## NACLs
+- Essentially a stateless firewall to control traffic at the subnet level.
+- Stateless: Must explicitly define both inbound and outbound traffic rules.
+- Assign one NACL per subnet, with a default NACL in place if needed.
+- Newly created NACLs will deny all traffic by default until you add rules.
+- Rules are evaluated in order, starting from the lowest numbered rule.
+- With NACLs you can not filter below resources traffic.
+  - NACLs do not work with DNS, So you can not use nacls to filter dns resolutions.
+  - NACLs do not work with DHCP
+  - NACLs do not work with EC2 Instance Metadata Service (IMDS)
+  - NACLs do not work on Reserved IPs addresses used by the default VPC router.
+- Ephemeral Ports
+  - Short-Lived transport protocol ports that operating system allocate for client-side transmissions when they connect to a server.
+  - Ephemeral port ranges vary by operating system.
+  - Example:
+    - Inbound HTTP connections use port 80, but the outbound connection will be on a port between 1024-65535.
+
+![img_1.png](img_1.png)
 
 ## Security Groups
+- Controls the traffic that is allowed to reach and leave the resources that it associated with.
+- Stateful: If you allow inbound traffic on a port, the response traffic is automatically allowed, regardless of outbound rules.
+- Security groups are associated with network interfaces, which are attached to resources like EC2 instances.
+- Security groups can be associated with multiple resources, and multiple security groups can be associated with a single resource.
+- Security groups are evaluated based on the rules defined within them, and all rules must be satisfied for traffic to be allowed.
+  - Example: If a security group allows inbound traffic on port 80 from a specific IP address, the response traffic on port 80 will be allowed regardless of outbound rules.
+  - Security groups do not have a default deny rule, meaning if no rules are defined, all traffic is denied.
+  - Security groups do not have a default allow rule, meaning if no rules are defined, all traffic is denied.
+- Implicit Deny: If no rules match, the traffic is denied.
+- Components
+  - Protocol: The protocol for the rule, such as TCP, UDP, or ICMP.
+  - Port Range: The port range for the rule, such as 80 for HTTP or 443 for HTTPS.
+  - Source/Destination: The source or destination IP address or CIDR block for the rule.
+  - Description: An optional description for the rule to help identify its purpose.
+- You can reference other security groups in the source or destination field, allowing for more granular control over traffic.
+
+![img_2.png](img_2.png)
+
+![img_3.png](img_3.png)
+
+![img_4.png](img_4.png)
+
 
 ## DHCP Option Sets
+- A DHCP Option set is a group of network settings used by resources in your VPC
+- These allow you to control the following aspects of the network configuration in your VPC:
+  - DNS Servers: Specify the DNS servers that instances in your VPC should use for name resolution.
+  - Domain Name: Specify the domain name that instances in your VPC should use for name resolution.
+  - NTP Servers: Specify the Network Time Protocol (NTP) servers that instances in your VPC should use for time synchronization.
+  - NetBIOS Name Servers: Specify the NetBIOS name servers that instances in your VPC should use for name resolution.
+  - DNS ON or OFF: Enable or disable DNS resolution in your VPC.
+- You can associate a DHCP Option set with multiple VPCs
+- However, each VPC can have only one associated DHCP Option set at a time.
+- Each AWS Region has a default DHCP Option set that is automatically created when you create a VPC.
+- Each VPC uses the default DHCP Option set for its region unless you specify otherwise
+- You can create and associate a custom DHCP option set with the VPC, or use no DHCP option set at all.
+- You can not modify a DHCP Option set once it is created, but you can create a new one and associate it with the VPC.
 
-## VPC Peerings
+## VPC Peering
+
 
 
 
