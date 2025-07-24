@@ -147,7 +147,15 @@
 - You can not modify a DHCP Option set once it is created, but you can create a new one and associate it with the VPC.
 
 ## VPC Peering
+- Feature to enable secure and direct communication between two VPCs.
+- Traffic remains within the AWS network infrastructure.
+- Enables private resources to communicate and interact.
+- Features to ensures there is no single point of failure for a connection.
+- Connect cross-account, same account, and even cross-region VPCs.
 
+![img_5.png](img_5.png)
+
+![img_6.png](img_6.png)
 
 
 
