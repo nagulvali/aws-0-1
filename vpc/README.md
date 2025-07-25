@@ -46,7 +46,7 @@
 - Give you a target in your VPC for internet-routable traffic to flow through.
 - Created separately from the VPC and can be attached to only one VPC at a time.
 
-![img.png](img.png)
+![img.png](.images/img.png)
 
 ## VPC Subnets
 - A subnet is a range of IP addresses in your VPC for hosting resources.
@@ -105,7 +105,7 @@
   - Example:
     - Inbound HTTP connections use port 80, but the outbound connection will be on a port between 1024-65535.
 
-![img_1.png](img_1.png)
+![img_1.png](.images/img_1.png)
 
 ## Security Groups
 - Controls the traffic that is allowed to reach and leave the resources that it associated with.
@@ -124,11 +124,11 @@
   - Description: An optional description for the rule to help identify its purpose.
 - You can reference other security groups in the source or destination field, allowing for more granular control over traffic.
 
-![img_2.png](img_2.png)
+![img_2.png](.images/img_2.png)
 
-![img_3.png](img_3.png)
+![img_3.png](.images/img_3.png)
 
-![img_4.png](img_4.png)
+![img_4.png](.images/img_4.png)
 
 
 ## DHCP Option Sets
@@ -153,9 +153,9 @@
 - Features to ensures there is no single point of failure for a connection.
 - Connect cross-account, same account, and even cross-region VPCs.
 
-![img_5.png](img_5.png)
+![img_5.png](.images/img_5.png)
 
-![img_7.png](img_7.png)
+![img_7.png](.images/img_7.png)
 
 - Accepter vpc CIDR will be shown after the peering connection is established.
 - You can enable a VPC to resolve public IPV4 DNS hostnames to private IPv4 addresses when queried from instances in the peer VPC
@@ -167,7 +167,7 @@
   - Route tables must be updated to correctly route the traffic destined for a peered VPC.
 
 - Below image represents NOT transitive routing
-![img_8.png](img_8.png)
+![img_8.png](.images/img_8.png)
 
 - When VPCs are peered in the same region, you can reference peered VPC security group IDs as needed (e.g. security group rules).
 
@@ -210,7 +210,7 @@
 - Peering VPCs are not transitive by default
 - You can achieve a Transit VPC by using a VPN solution
 
-![img_9.png](img_9.png)
+![img_9.png](.images/img_9.png)
 
 - Virtual Private Gateway (VGW)
   - It is a simply the VPN concentrator on the AWS side of a sit-to-site VPN connection.
@@ -226,7 +226,7 @@
 - Create endpoints within your VPC to control and secure the traffic
 - Capable of hosting your own private services as well by setting up a service provider and a service consumer.
 
-![img_10.png](img_10.png)
+![img_10.png](.images/img_10.png)
 
 - AWS Private Link is what powers VPC Interface Endpoints, which will be discussed soon !
 
@@ -241,7 +241,7 @@
 - Gateway endpoints do not require any security group updates
 - These Gateway endpoints currently only support S3 and DynamoDB.
 
-![img_11.png](img_11.png)
+![img_11.png](.images/img_11.png)
 
 ### VPC Interface Endpoints
 - Interface endpoints actually deploys an ENI in chosen VPC and subnets, which allows you to connect to AWS services privately.
@@ -254,7 +254,7 @@
 - Private DNS
   - Enabling this feature in VPC enables you to make requests to a service using the public endpoint DNS name, all while leveraging the private connectivity via the interface VPC endpoint.
 
-![img_12.png](img_12.png)
+![img_12.png](.images/img_12.png)
 
 - S3 can leverage both Gateway and Interface endpoints, but DynamoDB only supports Gateway endpoints.
 
