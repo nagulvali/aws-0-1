@@ -218,6 +218,7 @@
   - VGW is a managed service that provides high availability and scalability.
 
 ## VPC Endpoints & AWS Private Link
+### AWS Private Link
 - AWS Private Link is a highly available, scalable technology that enables private connectivity between VPCs and AWS services as if they were in the same VPC.
 - Aws service is going to leverage the public endpoint by default.
 - Private Link allows your private resources to communicate with services entirely within the AWS private network.
@@ -230,8 +231,31 @@
 - AWS Private Link is what powers VPC Interface Endpoints, which will be discussed soon !
 
 
+### VPC Gateway Endpoints
+- Gateway VPC endpoints provide reliable, secure connectivity to Amazon S3 and DynamoDB without requiring an internet gateway or NAT device for your VPC.
+- Perfect for keeping S3 and DynamoDB traffic from traversing the public internet.
+- These to not leverage Private Link, but rather use the AWS backbone network to connect to the services.
+- They are free to use, but you will pay for the data transfer out of the VPC to the service.
+- They require updates to route tables to direct traffic correctly.
+- Easy to use and reference via managed prefix list for routes.
+- Gateway endpoints do not require any security group updates
+- These Gateway endpoints currently only support S3 and DynamoDB.
 
+![img_11.png](img_11.png)
 
+### VPC Interface Endpoints
+- Interface endpoints actually deploys an ENI in chosen VPC and subnets, which allows you to connect to AWS services privately.
+- Requires management of an attached security group.
+- Supports more services than gateway endpoints, but costs money for each ENI.
+- Interface Endpoints DNS resolution
+  - Traffic is sent to AWS services via private endpoints, which require use of regional and zonal DNS names.
+  - regional DNS names: vpce-<endpoint-id>.<region>.vpce.amazonaws.com
+  - zonal DNS names: vpce-<endpoint-id>.<region>.<az>.vpce.amazonaws.com
+- Private DNS
+  - Enabling this feature in VPC enables you to make requests to a service using the public endpoint DNS name, all while leveraging the private connectivity via the interface VPC endpoint.
 
+![img_12.png](img_12.png)
+
+- S3 can leverage both Gateway and Interface endpoints, but DynamoDB only supports Gateway endpoints.
 
 
